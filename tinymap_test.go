@@ -3,9 +3,8 @@ package tinymap
 import (
 	"encoding/binary"
 	"testing"
-	"testing/quick"
 
-	ddmin "github.com/dgryski/go-ddmin"
+	"github.com/dgryski/go-tinyfuzz"
 )
 
 type opType uint8
@@ -123,18 +122,7 @@ func TestMap(t *testing.T) {
 		return true
 	}
 
-	if err := quick.Check(f, nil); err != nil {
-		data := err.(*quick.CheckError).In[0].([]byte)
+	if err := tinyfuzz.Fuzz(f, nil); err != nil {
 		t.Error(err)
-		data = ddmin.Minimize(data, func(d []byte) ddmin.Result {
-			if !f(d) {
-				return ddmin.Fail
-			}
-
-			return ddmin.Pass
-		})
-		t.Logf("reduced: %v", data)
-		verbose = true
-		f(data)
 	}
 }
