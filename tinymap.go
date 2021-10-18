@@ -1,4 +1,4 @@
-// tinymap is a compact map for keys less than 64
+// Package tinymap is a compact map for keys less than 64
 package tinymap
 
 import (
